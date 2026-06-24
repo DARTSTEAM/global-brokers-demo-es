@@ -130,6 +130,13 @@ select.form-input { appearance: none; cursor: pointer; background-image: url("da
 
 /* ─── Stats ────────────────────────────────────────────────────────────────── */
 .stats-grid { gap: var(--space-md); margin-bottom: var(--space-xl); grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); display: grid; }
+.stats-grid-5 { grid-template-columns: repeat(5, 1fr); }
+.stat-card-accent {
+  border: 2px solid var(--color-accent); background: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-accent-light);
+}
+.stat-card-accent .stat-icon-wrapper { background: var(--color-accent); color: #fff; }
+.stat-card-accent .stat-value { color: var(--color-text-primary); }
 .stat-card { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); padding: var(--space-lg); transition: transform var(--transition-fast), box-shadow var(--transition-fast); position: relative; overflow: hidden; }
 .stat-card:before { content: ""; background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-light) 100%); opacity: 0; height: 3px; transition: opacity var(--transition-fast); position: absolute; top: 0; left: 0; right: 0; }
 .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
@@ -313,6 +320,7 @@ tbody tr:last-child td { border-bottom: none; }
   .page-header { padding: var(--space-lg); padding-top: calc(var(--space-lg) + 52px); }
   .page-body { padding: var(--space-lg); }
   .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid-5 { grid-template-columns: 1fr 1fr; }
   .detail-grid { grid-template-columns: 1fr; }
   .page-header-row { flex-direction: column; align-items: flex-start; }
   .charts-grid, .charts-grid-3 { grid-template-columns: 1fr; }
