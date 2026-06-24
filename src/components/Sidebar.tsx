@@ -1,9 +1,9 @@
 "use client";
 
-import { LayoutDashboard, Package, Users, FileText, LogOut, Grid3x3 } from "lucide-react";
+import { LayoutDashboard, Package, Users, FileText, LogOut, Grid3x3, Ship, Receipt } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
-type View = "panel" | "pedidos" | "clientes" | "proformas" | "cuadro";
+type View = "panel" | "pedidos" | "clientes" | "proformas" | "cuadro" | "embarques" | "invoices";
 
 interface SidebarProps {
   currentView: View;
@@ -12,10 +12,12 @@ interface SidebarProps {
 }
 
 const navItems = (isAdmin: boolean) => [
-  { key: "panel" as View,    label: "Panel",           icon: LayoutDashboard },
-  { key: "pedidos" as View,  label: "Pedidos",         icon: Package },
+  { key: "panel" as View,      label: "Panel",           icon: LayoutDashboard },
+  { key: "pedidos" as View,    label: "Pedidos",         icon: Package },
+  ...(isAdmin ? [{ key: "embarques" as View, label: "Embarques", icon: Ship }] : []),
   ...(isAdmin ? [{ key: "clientes" as View, label: "Clientes", icon: Users }] : []),
-  { key: "proformas" as View, label: "Proformas",      icon: FileText },
+  { key: "invoices" as View,   label: "Invoices",        icon: Receipt },
+  { key: "proformas" as View,  label: "Proformas",       icon: FileText },
   ...(isAdmin ? [{ key: "cuadro" as View, label: "Cuadro General", icon: Grid3x3 }] : []),
 ];
 

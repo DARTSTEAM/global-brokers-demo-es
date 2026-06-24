@@ -19,6 +19,117 @@ export const users: Record<string, User> = {
   urb:   { id: "urb",   username: "urb",   password: "urb2025",  role: "client", name: "Urbano Team",       company: "URB Clothing" },
 };
 
+// ─── Datos de facturación por cliente (CNEE) ─────────────────────────────────
+
+export interface DatosFacturacion {
+  cnee: string;
+  direccion: string;
+  localidadPais: string;
+  telefono: string;
+  cuit: string;
+}
+
+export const datosFacturacion: Record<string, DatosFacturacion> = {
+  pgd: {
+    cnee: "PGD INDUMENTARIA S.R.L.",
+    direccion: "Av. Córdoba 1530 Piso 3, Dpto B",
+    localidadPais: "Ciudad Autónoma de Buenos Aires, Argentina",
+    telefono: "+54 11 4832-7741",
+    cuit: "30-71654892-3",
+  },
+  eze: {
+    cnee: "EZE TEXTIL S.A.",
+    direccion: "Gral. José de San Martín 415",
+    localidadPais: "Avellaneda, Provincia de Buenos Aires, Argentina",
+    telefono: "+54 11 4201-5589",
+    cuit: "30-71230456-8",
+  },
+  mat: {
+    cnee: "MATERIA BA S.R.L.",
+    direccion: "Aguero 1151 Piso 1, Dpto A",
+    localidadPais: "Ciudad Autónoma de Buenos Aires, Argentina",
+    telefono: "+54 11 4963-2210",
+    cuit: "30-71842925-7",
+  },
+  urb: {
+    cnee: "URB CLOTHING S.A.",
+    direccion: "Av. Jujuy 880, Planta Baja",
+    localidadPais: "Ciudad Autónoma de Buenos Aires, Argentina",
+    telefono: "+54 11 4308-1125",
+    cuit: "30-71567834-1",
+  },
+};
+
+// ─── Invoices ────────────────────────────────────────────────────────────────
+
+export interface ItemInvoice {
+  articulo: string;
+  cantidad: number;
+  unidad: "KG" | "MTS";
+  precioUnit: number;
+  total: number;
+}
+
+export interface Invoice {
+  id: string;
+  pedidoId: string;
+  clientId: string;
+  nroInvoice: string;
+  fecha: string;
+  cuenta: string;
+  desde: string;
+  hasta: string;
+  condicionPago: string;
+  items: ItemInvoice[];
+  totalCantidad: number;
+  totalFOB: number;
+}
+
+export const invoices: Invoice[] = [
+  {
+    id: "inv-001",
+    pedidoId: "25001-PGD",
+    clientId: "pgd",
+    nroInvoice: "26001 PGD",
+    fecha: "2026-03-20",
+    cuenta: "LN",
+    desde: "Shanghái, China",
+    hasta: "Buenos Aires, Argentina",
+    condicionPago: "30% Anticipo + 70% Antes del Envío",
+    items: [
+      { articulo: "ART 2661 - ESTAMPADO - 19LSG127-1 100% Poliéster", cantidad: 119, unidad: "KG", precioUnit: 16.58, total: 1973.02 },
+      { articulo: "ART 2662 - NEGRO/BORGOÑA/NATURAL - 4249 100% Poliéster", cantidad: 234, unidad: "KG", precioUnit: 13.91, total: 3254.94 },
+      { articulo: "ART 2663 - NEGRO/BORGOÑA/NATURAL - 4251 100% Poliéster", cantidad: 254, unidad: "KG", precioUnit: 14.98, total: 3804.92 },
+    ],
+    totalCantidad: 607,
+    totalFOB: 9032.88,
+  },
+  {
+    id: "inv-002",
+    pedidoId: "25001-EZE",
+    clientId: "eze",
+    nroInvoice: "26002 EZE",
+    fecha: "2025-09-10",
+    cuenta: "BRO",
+    desde: "Dhaka, Bangladesh",
+    hasta: "Buenos Aires, Argentina",
+    condicionPago: "100% Anticipo para Stocks",
+    items: [
+      { articulo: "ART 2026002 - SURTIDO - CHINO-001 98% Algodón 2% Spandex", cantidad: 600, unidad: "KG", precioUnit: 5.75, total: 3450 },
+    ],
+    totalCantidad: 600,
+    totalFOB: 3450,
+  },
+];
+
+export function getInvoicesCliente(clientId: string): Invoice[] {
+  return invoices.filter((inv) => inv.clientId === clientId);
+}
+
+export function getInvoicePorPedido(pedidoId: string): Invoice | undefined {
+  return invoices.find((inv) => inv.pedidoId === pedidoId);
+}
+
 // ─── Estados de pedidos ──────────────────────────────────────────────────────
 
 export const ESTADO = {

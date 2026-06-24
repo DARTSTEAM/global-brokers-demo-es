@@ -12,9 +12,11 @@ import TablaPedidos from "@/components/TablaPedidos";
 import DetallePedido from "@/components/DetallePedido";
 import VistaClientes from "@/components/VistaClientes";
 import VistaProformas from "@/components/VistaProformas";
+import VistaEmbarques from "@/components/VistaEmbarques";
+import VistaInvoices from "@/components/VistaInvoices";
 import CuadroGeneral from "@/components/CuadroGeneral";
 
-type View = "panel" | "pedidos" | "clientes" | "proformas" | "cuadro";
+type View = "panel" | "pedidos" | "clientes" | "proformas" | "cuadro" | "embarques" | "invoices";
 
 export default function App() {
   const { isAuthenticated, user } = useAuth();
@@ -50,7 +52,7 @@ export default function App() {
   const pedido = pedidoId ? misPedidos.find((p) => p.id === pedidoId) ?? null : null;
 
   let contenido: React.ReactNode;
-  if (pedido && (vista === "pedidos" || vista === "panel")) {
+  if (pedido && (vista === "pedidos" || vista === "panel" || vista === "embarques")) {
     contenido = <DetallePedido pedido={pedido} onVolver={volverPedidos} />;
   } else if (vista === "panel") {
     contenido = <Panel onVerPedido={verPedido} />;
@@ -76,8 +78,12 @@ export default function App() {
         </div>
       </div>
     );
+  } else if (vista === "embarques" && isAdmin) {
+    contenido = <VistaEmbarques onVerPedido={verPedido} />;
   } else if (vista === "clientes" && isAdmin) {
     contenido = <VistaClientes onVerCliente={verPedidosCliente} />;
+  } else if (vista === "invoices") {
+    contenido = <VistaInvoices />;
   } else if (vista === "proformas") {
     contenido = <VistaProformas />;
   } else if (vista === "cuadro" && isAdmin) {

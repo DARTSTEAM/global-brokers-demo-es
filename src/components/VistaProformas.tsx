@@ -3,17 +3,21 @@
 import { useState } from "react";
 import { Plus, Trash2, FileText } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { users } from "@/lib/data";
+import { users, catalogoTelas } from "@/lib/data";
 
 interface ItemProforma {
-  descripcion: string;
-  composicion: string;
+  nombreComercial: string;
+  articulo: string;
   color: string;
   cantidad: number;
-  precioUnit: number;
+  unidad: "KG" | "MTS";
+  precioFOB: number;
+  precioCustomer: number;
 }
 
-const itemVacio = (): ItemProforma => ({ descripcion: "", composicion: "", color: "", cantidad: 0, precioUnit: 0 });
+const itemVacio = (): ItemProforma => ({
+  nombreComercial: "", articulo: "", color: "", cantidad: 0, unidad: "KG", precioFOB: 0, precioCustomer: 0,
+});
 
 const fmtUSD = (v: number) =>
   new Intl.NumberFormat("es-AR", { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(v);
@@ -32,12 +36,23 @@ export default function VistaProformas() {
   const clientesOpciones = Object.values(users).filter((u) => u.role === "client");
   const clienteSelec = users[clienteId];
 
-  const subtotal = items.reduce((s, i) => s + i.cantidad * i.precioUnit, 0);
-  const iva = 0; // proformas textiles no aplican IVA
+  const subtotal = items.reduce((s, i) => s + i.cantidad * i.precioCustomer, 0);
 
   const actualizarItem = (idx: number, campo: keyof ItemProforma, valor: string | number) => {
     setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, [campo]: valor } : it)));
   };
+
+  const seleccionarTela = (idx: number, telaId: string) => {
+    const tela = catalogoTelas.find((t) => t.id === telaId);
+    if (tela) {
+      setItems((prev) =>
+        prev.map((it, i) =>
+          i === idx ? { ...it, nombreComercial: tela.commercialName, articulo: tela.composition } : it
+        )
+      );
+    }
+  };
+
   const agregarItem = () => setItems((prev) => [...prev, itemVacio()]);
   const quitarItem = (idx: number) => setItems((prev) => prev.filter((_, i) => i !== idx));
 
@@ -63,7 +78,7 @@ export default function VistaProformas() {
             <div className="proforma-preview-header">
               <div>
                 <div className="proforma-preview-brand">Global Brokers</div>
-                <div className="proforma-preview-subtitle">Proforma de Pedido</div>
+                <div className="proforma-preview-subtitle">Proforma de Pedido — Textiles</div>
               </div>
               <div className="proforma-preview-meta">
                 <span className="proforma-meta-label">Número</span>
@@ -86,11 +101,12 @@ export default function VistaProformas() {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Descripción</th>
-                    <th>Composición</th>
+                    <th>Nombre Comercial</th>
+                    <th>Artículo / Composición</th>
                     <th>Color</th>
                     <th style={{ textAlign: "right" }}>Cantidad</th>
-                    <th style={{ textAlign: "right" }}>P. Unit.</th>
+                    <th>Unid.</th>
+                    <th style={{ textAlign: "right" }}>P. Customer</th>
                     <th style={{ textAlign: "right" }}>Total</th>
                   </tr>
                 </thead>
@@ -98,18 +114,19 @@ export default function VistaProformas() {
                   {items.map((item, i) => (
                     <tr key={i} style={{ cursor: "default" }}>
                       <td>{i + 1}</td>
-                      <td>{item.descripcion}</td>
-                      <td>{item.composicion}</td>
+                      <td><strong>{item.nombreComercial}</strong></td>
+                      <td style={{ fontSize: ".8125rem" }}>{item.articulo}</td>
                       <td>{item.color}</td>
                       <td style={{ textAlign: "right" }}>{item.cantidad.toLocaleString("es-AR")}</td>
-                      <td style={{ textAlign: "right" }}>{fmtUSD(item.precioUnit)}</td>
-                      <td style={{ textAlign: "right" }}><strong>{fmtUSD(item.cantidad * item.precioUnit)}</strong></td>
+                      <td>{item.unidad}</td>
+                      <td style={{ textAlign: "right" }}>{fmtUSD(item.precioCustomer)}</td>
+                      <td style={{ textAlign: "right" }}><strong>{fmtUSD(item.cantidad * item.precioCustomer)}</strong></td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={6} style={{ textAlign: "right", fontWeight: 600 }}>Total USD</td>
+                    <td colSpan={7} style={{ textAlign: "right", fontWeight: 600 }}>Total USD</td>
                     <td style={{ textAlign: "right" }}><strong style={{ color: "var(--color-accent)", fontSize: "1.1rem" }}>{fmtUSD(subtotal)}</strong></td>
                   </tr>
                 </tfoot>
@@ -141,7 +158,7 @@ export default function VistaProformas() {
           <div className="page-header-row">
             <div>
               <h1 className="page-title">Nueva Proforma</h1>
-              <p className="page-subtitle">Completá los datos para generar la proforma</p>
+              <p className="page-subtitle">Completá los datos de la proforma textil</p>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
               <button className="btn btn-secondary btn-sm" onClick={() => setModo("lista")}>Cancelar</button>
@@ -172,7 +189,7 @@ export default function VistaProformas() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Condición de Pago</label>
-                  <input type="text" className="form-input" placeholder="Ej: 30% anticipo + 70% antes del envío" value={condicionPago} onChange={(e) => setCondicionPago(e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Ej: 20% ADV + 80% Against Arrival" value={condicionPago} onChange={(e) => setCondicionPago(e.target.value)} />
                 </div>
                 <div className="form-group" style={{ gridColumn: "1 / -1" }}>
                   <label className="form-label">Notas adicionales</label>
@@ -183,19 +200,27 @@ export default function VistaProformas() {
 
             {/* Artículos */}
             <div className="detail-card">
-              <div className="detail-card-title"><Plus size={14} /> Artículos</div>
+              <div className="detail-card-title"><Plus size={14} /> Artículos — Telas</div>
               {items.map((item, idx) => (
                 <div key={idx} className="proforma-item-row">
                   <div className="proforma-item-number">{idx + 1}</div>
                   <div className="proforma-item-fields">
                     <div className="proforma-form-grid">
                       <div className="form-group">
-                        <label className="form-label">Descripción</label>
-                        <input className="form-input" value={item.descripcion} onChange={(e) => actualizarItem(idx, "descripcion", e.target.value)} placeholder="Ej: Campera de Mujer" />
+                        <label className="form-label">Nombre Comercial</label>
+                        <div style={{ display: "flex", gap: 8 }}>
+                          <select className="form-input" value="" onChange={(e) => seleccionarTela(idx, e.target.value)} style={{ flex: "0 0 auto", width: "auto" }}>
+                            <option value="">Catálogo...</option>
+                            {catalogoTelas.map((t) => (
+                              <option key={t.id} value={t.id}>{t.commercialName}</option>
+                            ))}
+                          </select>
+                          <input className="form-input" value={item.nombreComercial} onChange={(e) => actualizarItem(idx, "nombreComercial", e.target.value)} placeholder="Ej: Stella, Barbie, Bengalina" />
+                        </div>
                       </div>
                       <div className="form-group">
-                        <label className="form-label">Composición</label>
-                        <input className="form-input" value={item.composicion} onChange={(e) => actualizarItem(idx, "composicion", e.target.value)} placeholder="Ej: 100% Poliéster" />
+                        <label className="form-label">Artículo / Composición</label>
+                        <input className="form-input" value={item.articulo} onChange={(e) => actualizarItem(idx, "articulo", e.target.value)} placeholder="Ej: FLS553 92%P 8%SP 160CM 260/270GSM" />
                       </div>
                     </div>
                     <div className="proforma-item-fields-row">
@@ -208,12 +233,23 @@ export default function VistaProformas() {
                         <input type="number" className="form-input" value={item.cantidad || ""} onChange={(e) => actualizarItem(idx, "cantidad", Number(e.target.value))} min={0} />
                       </div>
                       <div className="form-group">
-                        <label className="form-label">P. Unit. (USD)</label>
-                        <input type="number" className="form-input" value={item.precioUnit || ""} onChange={(e) => actualizarItem(idx, "precioUnit", Number(e.target.value))} min={0} step={0.01} />
+                        <label className="form-label">Unidad</label>
+                        <select className="form-input" value={item.unidad} onChange={(e) => actualizarItem(idx, "unidad", e.target.value)}>
+                          <option value="KG">KG</option>
+                          <option value="MTS">MTS</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">P. FOB NET (USD)</label>
+                        <input type="number" className="form-input" value={item.precioFOB || ""} onChange={(e) => actualizarItem(idx, "precioFOB", Number(e.target.value))} min={0} step={0.01} />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">P. Customer (USD)</label>
+                        <input type="number" className="form-input" value={item.precioCustomer || ""} onChange={(e) => actualizarItem(idx, "precioCustomer", Number(e.target.value))} min={0} step={0.01} />
                       </div>
                       <div className="form-group">
                         <label className="form-label">Total</label>
-                        <div className="proforma-line-total">{fmtUSD(item.cantidad * item.precioUnit)}</div>
+                        <div className="proforma-line-total">{fmtUSD(item.cantidad * item.precioCustomer)}</div>
                       </div>
                     </div>
                   </div>
@@ -251,7 +287,7 @@ export default function VistaProformas() {
         <div className="page-header-row">
           <div>
             <h1 className="page-title">Proformas</h1>
-            <p className="page-subtitle">Gestión de proformas de pedidos</p>
+            <p className="page-subtitle">Gestión de proformas de pedidos textiles</p>
           </div>
           <button className="btn btn-primary btn-sm" onClick={() => setModo("nueva")}>
             <Plus size={14} /> Nueva Proforma
