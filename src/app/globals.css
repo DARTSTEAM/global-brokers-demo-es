@@ -257,15 +257,18 @@ tbody tr:last-child td { border-bottom: none; }
 .proforma-totals-row { padding: var(--space-sm) 0; color: var(--color-text-secondary); justify-content: space-between; align-items: center; font-size: .875rem; display: flex; }
 .proforma-totals-grand { color: var(--color-text-primary); padding-top: var(--space-sm); border-top: 1px solid var(--color-border-light); margin-top: var(--space-xs); font-size: 1.125rem; }
 .proforma-totals-grand strong { color: var(--color-accent); font-size: 1.25rem; }
-.proforma-preview { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); padding: var(--space-2xl); max-width: 800px; box-shadow: var(--shadow-md); }
+.proforma-preview { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); padding: var(--space-2xl); max-width: 900px; box-shadow: var(--shadow-md); overflow: hidden; }
 .proforma-preview-header { margin-bottom: var(--space-xl); padding-bottom: var(--space-lg); border-bottom: 2px solid var(--color-accent); justify-content: space-between; align-items: flex-start; display: flex; }
 .proforma-preview-brand { font-family: var(--font-display); color: var(--color-accent); font-size: 1.5rem; font-weight: 700; }
 .proforma-preview-subtitle { color: var(--color-text-tertiary); margin-top: var(--space-xs); text-transform: uppercase; letter-spacing: .08em; font-size: .875rem; }
 .proforma-preview-meta { text-align: right; color: var(--color-text-secondary); flex-direction: column; gap: 4px; font-size: .8125rem; display: flex; }
 .proforma-meta-label { color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em; font-size: .6875rem; font-weight: 600; }
 .proforma-preview-client { margin-bottom: var(--space-xl); color: var(--color-text-secondary); font-size: .875rem; }
-.proforma-items-table { margin-bottom: var(--space-xl); }
-.proforma-items-table tfoot td { padding: 14px var(--space-lg); font-size: .875rem; }
+.proforma-items-table { margin-bottom: var(--space-xl); overflow-x: auto; }
+.proforma-items-table table { width: 100%; font-size: .8125rem; }
+.proforma-items-table th { font-size: .625rem; padding: 8px 10px; }
+.proforma-items-table td { padding: 10px; font-size: .8125rem; }
+.proforma-items-table tfoot td { padding: 10px; font-size: .875rem; }
 
 /* ─── Cuadro General ───────────────────────────────────────────────────────── */
 .cuadro-tabs { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); margin-bottom: var(--space-lg); gap: 4px; width: fit-content; padding: 4px; display: flex; }
