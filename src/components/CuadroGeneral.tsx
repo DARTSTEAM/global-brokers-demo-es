@@ -172,7 +172,7 @@ export default function CuadroGeneral() {
                           )}
                         </td>
                         <td>
-                          <button className={`cuadro-expand-btn ${isExpanded ? "expanded" : ""}`}>
+                          <button className={`cuadro-expand-btn ${isExpanded ? "expanded" : ""}`} aria-label={isExpanded ? "Contraer detalle" : "Expandir detalle"}>
                             <ChevronDown size={14} />
                           </button>
                         </td>

@@ -70,8 +70,8 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
       <div className="page-header">
         <div className="page-header-row">
           <div>
-            <h1 className="page-title">{isAdmin ? "Admin Dashboard" : `Panel — ${user?.company}`}</h1>
-            <p className="page-subtitle">Global Brokers — Operations Overview</p>
+            <h1 className="page-title">{isAdmin ? "Panel Admin" : `Panel — ${user?.company}`}</h1>
+            <p className="page-subtitle">Global Brokers — Resumen de Operaciones</p>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
           <div className="stat-card">
             <div className="stat-card-header-row">
               <div className="stat-icon-wrapper"><ShoppingBag size={16} /></div>
-              <span className="stat-label">Total Orders</span>
+              <span className="stat-label">Pedidos Totales</span>
             </div>
             <div className="stat-value">{stats.total}</div>
           </div>
@@ -90,17 +90,17 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
           <div className="stat-card">
             <div className="stat-card-header-row">
               <div className="stat-icon-wrapper"><Loader size={16} /></div>
-              <span className="stat-label">Active Orders</span>
+              <span className="stat-label">Pedidos Activos</span>
             </div>
             <div className="stat-value">{stats.activos}</div>
-            <div className="stat-detail">Currently in progress</div>
+            <div className="stat-detail">En progreso actualmente</div>
           </div>
 
           {isAdmin && (
             <div className="stat-card">
               <div className="stat-card-header-row">
                 <div className="stat-icon-wrapper"><Users size={16} /></div>
-                <span className="stat-label">Clients</span>
+                <span className="stat-label">Clientes</span>
               </div>
               <div className="stat-value">{totalClientes}</div>
             </div>
@@ -119,7 +119,7 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
           <div className="stat-card">
             <div className="stat-card-header-row">
               <div className="stat-icon-wrapper"><Package size={16} /></div>
-              <span className="stat-label">Total Pieces</span>
+              <span className="stat-label">Piezas Totales</span>
             </div>
             <div className="stat-value">{stats.totalPzas.toLocaleString("es-AR")}</div>
           </div>
@@ -127,7 +127,7 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
           <div className="stat-card stat-card-accent">
             <div className="stat-card-header-row">
               <div className="stat-icon-wrapper"><DollarSign size={16} /></div>
-              <span className="stat-label">Total Revenue</span>
+              <span className="stat-label">Ingresos Totales</span>
             </div>
             <div className="stat-value">{fmtUSD(stats.totalImporte)}</div>
           </div>
@@ -138,13 +138,13 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
           {/* Revenue by Client (bar) */}
           {isAdmin && (
             <div className="chart-card">
-              <div className="chart-card-title"><TrendingUp size={13} /> Revenue by Client</div>
+              <div className="chart-card-title"><TrendingUp size={13} /> Ingreso por Cliente</div>
               <div className="chart-container">
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={barData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
                     <XAxis dataKey="name" tick={{ fontSize: 12, fontWeight: 500 }} interval={0} />
                     <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-                    <Tooltip formatter={(v) => [fmtUSD(Number(v)), "Revenue"]} />
+                    <Tooltip formatter={(v) => [fmtUSD(Number(v)), "Ingreso"]} />
                     <Bar dataKey="importe" fill="#8b7355" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -154,7 +154,7 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
 
           {/* Monthly Order Value (area) */}
           <div className="chart-card">
-            <div className="chart-card-title"><Package size={13} /> Monthly Order Value</div>
+            <div className="chart-card-title"><Package size={13} /> Valor Mensual de Pedidos</div>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={220}>
                 <AreaChart data={monthlyData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
@@ -167,7 +167,7 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0ede8" />
                   <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-                  <Tooltip formatter={(v) => [fmtUSD(Number(v)), "Order Value"]} />
+                  <Tooltip formatter={(v) => [fmtUSD(Number(v)), "Valor"]} />
                   <Area type="monotone" dataKey="valor" stroke="#8b7355" strokeWidth={2} fill="url(#gradientArea)" />
                 </AreaChart>
               </ResponsiveContainer>
@@ -176,7 +176,7 @@ export default function Panel({ onVerPedido }: { onVerPedido: (id: string) => vo
 
           {/* Status Distribution (donut) */}
           <div className="chart-card">
-            <div className="chart-card-title"><PackageCheck size={13} /> Status Distribution</div>
+            <div className="chart-card-title"><PackageCheck size={13} /> Distribución por Estado</div>
             <div className="chart-container chart-container-pie">
               <PieChart width={180} height={180}>
                 <Pie data={pieData} cx={85} cy={85} innerRadius={50} outerRadius={80} dataKey="value">

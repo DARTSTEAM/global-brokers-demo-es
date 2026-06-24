@@ -104,7 +104,7 @@ export default function App() {
 
       <Sidebar currentView={vista} onNavigate={navegar} isOpen={menuAbierto} />
 
-      <main className="main-content">{contenido}</main>
+      <main id="main-content" className="main-content">{contenido}</main>
     </div>
   );
 }

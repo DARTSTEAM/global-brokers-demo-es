@@ -10,7 +10,19 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
+      <head>
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+          as="style"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        />
+      </head>
       <body>
+        <a href="#main-content" className="skip-to-content">Ir al contenido</a>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

@@ -442,7 +442,7 @@ export default function VistaInvoices() {
                         {inv.desde} → {inv.hasta}
                       </td>
                       <td>
-                        <button className="btn btn-ghost btn-sm btn-icon-only">
+                        <button className="btn btn-ghost btn-sm btn-icon-only" aria-label="Ver invoice">
                           <ChevronRight size={16} />
                         </button>
                       </td>

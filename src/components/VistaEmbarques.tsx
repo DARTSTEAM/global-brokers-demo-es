@@ -117,7 +117,7 @@ export default function VistaEmbarques({ onVerPedido }: Props) {
                           </span>
                         </td>
                         <td>
-                          <button className="btn btn-ghost btn-sm btn-icon-only">
+                          <button className="btn btn-ghost btn-sm btn-icon-only" aria-label="Ver detalle">
                             <ChevronRight size={16} />
                           </button>
                         </td>
