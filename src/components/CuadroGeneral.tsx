@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { ChevronDown, ExternalLink, Grid3x3, MapPin, User, Package, Layers } from "lucide-react";
 import { cuadroGeneral, getStatsCuadro, CUADRO_STATUS, CUADRO_STATUS_COLORS, FilaCuadro } from "@/lib/data";
 
@@ -138,7 +138,7 @@ export default function CuadroGeneral() {
                 {filasFiltradas.map((fila) => {
                   const isExpanded = expandidos.has(fila.id);
                   return (
-                    <div key={fila.id} className="cuadro-row-group">
+                    <Fragment key={fila.id}>
                       <tr
                         className={`cuadro-clickable-row ${isExpanded ? "row-expanded" : ""}`}
                         onClick={() => toggleExpand(fila.id)}
@@ -223,7 +223,7 @@ export default function CuadroGeneral() {
                           </td>
                         </tr>
                       )}
-                    </div>
+                    </Fragment>
                   );
                 })}
               </tbody>
